@@ -4,6 +4,9 @@ let Task = require('./models/Task');
 let Completed = require('./models/Completed');
 require('./models/config.js');
 
+// Socket is the one in particular who is sending us stuff
+// IO.emit is sending to everyone
+
 /**
  * Decorates an express application with our
  * alpha delta niner niner super duper web sockets service.
@@ -22,6 +25,8 @@ function decorate(app) {
     socket.on('archive task', archiveTask);
     socket.on('unarchive task', notYetImplemented.bind(null, 'unarchive task'));
     socket.on('complete task', completeTask);
+
+    socket.on('get all tasks', getAllTasks(socket));
 
     socket.on('disconnect', () => {
       console.log('disconnected');
@@ -74,9 +79,22 @@ function decorate(app) {
    */
   function completeTask(id) {
     // TODO : add userId to Completed
-    return Task.findById(id).then(task => task.complete()).then(task => {
-      io.emit('complete task', task);
+    return Task.findById(id).then(task => task.complete()).then(completedTask => {
+      io.emit('complete task', completedTask);
     });
+  }
+
+  function getAllTasks(socket) {
+    return () => {
+      return Task.findAll().then(tasks => {
+        //return tasks;
+        //socket.on('get all tasks');
+
+        socket.emit('sending all tasks', tasks);
+
+        //io.('get all tasks', tasks);
+      });
+    };
   }
 
   /**

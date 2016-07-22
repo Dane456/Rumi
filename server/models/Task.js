@@ -29,7 +29,11 @@ var Task = db.define('task', {
       return Completed.create({}).then(completed => {
         this.dueBy = new Date(this.dueBy).getTime() + this.interval;
         this.addCompleted(completed);
-        return this.save();
+        return this.save().then(task => {
+          return task.getCompleteds().then(completeds => {
+            return completeds[0];
+          });
+        });
       });
     }
   }
