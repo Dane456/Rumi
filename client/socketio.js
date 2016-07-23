@@ -6,20 +6,20 @@ module.exports = socket;
 // let days = n => hours(n) * 24;
 // let cl = console.log.bind(console);
 
-//socket.on('sending all tasks', cl);
-//
+// socket.on('sending all tasks', cl);
+
 // module.exports = function(action) {
-//
+
 //   if (action === 'sending all tasks') {
 //     socket.on(action, cl);
 //   }
-//
+
 //   if (action === 'get all tasks') {
 //     socket.on(action);
 //     var answer = socket.emit(action);
 //     console.log(answer);
 //   }
-//
+
 //   if (action === 'create task') {
 //     socket.emit(action, {
 //       id: 1,

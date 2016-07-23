@@ -1,6 +1,5 @@
 import React from 'react';
 import Paper from 'material-ui/Paper';
-import socket from './socketio.js';
 
 let style = {
   height: 50,
@@ -11,49 +10,47 @@ let style = {
   overflow: 'hidden'
 };
 
-class Task extends React.Component {
-  constructor(props) {
-    super(props);
+var Task = (props) => {
+  // constructor(props) {
+  //   super(props);
 
-    this.state = {
-      id: this.props.id,
-      name: this.props.name,
-      due: this.props.due,
-      color: this.props.color
-    }
-  }
+  //   this.state = {
+  //     id: this.props.id,
+  //     name: this.props.name,
+  //     due: this.props.due,
+  //     color: this.props.color
+  //   };
+  // }
+  var completeTask = function() {
+    props.completeTask(props.id);
+  };
 
-  componentWillMount() {
-    if (this.state.color === 0) {
+  var componentWillMount = (function() {
+    if (props.color === 0) {
       style.border = '2px solid red';
-    } else if (this.state.color === 1) {
+    } else if (props.color === 1) {
       style.border = '2px solid yellow';
     } else {
       style.border = '2px solid green';
     }
-  }
+  })();
 
-  render() {
-    
-    let completeTask = () => {
-      socket.emit('complete task', this.state.id);
-    };
+  // render() {
 
-    return (
-      <div>
-        <Paper
-          style={style}
-          zDepth={3}
-          circle={true}
-          onTouchTap={completeTask}
-        >
-          <div className="innerTaskText">
-            {this.state.name}
-          </div>
-        </Paper>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <Paper
+        style={style}
+        zDepth={3}
+        circle={true}
+        onTouchTap={completeTask}>
+        <div className="innerTaskText">
+          {props.name}
+        </div>
+      </Paper>
+    </div>
+  );
+  // }
+};
 
 export default Task;
